@@ -27,7 +27,7 @@
       rotation="-90 0 0">
     </a-entity>
 
-    <a-entity id="model-to-place" gltf-model="#my-model" visible="false" scale="0 0 0"></a-entity>
+    <a-entity id="model-to-place" gltf-model="#sunflower" visible="false" scale="0 0 0"></a-entity>
 
   </a-scene>
 
@@ -53,7 +53,7 @@
       reticle.addEventListener('click', () => {
         // Create a new entity for the placed model
         const newModel = document.createElement('a-entity');
-        newModel.setAttribute('gltf-model', '#my-model');
+        newModel.setAttribute('gltf-model', '#sunflower');
 
         // Get the position and rotation from the reticle
         const position = reticle.getAttribute('position');
