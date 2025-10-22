@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>3D Models on Surface</title>
+  <meta name="description" content="A-Frame AR with plane detection and glTF model placement.">
+  <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/aframe-ar-hit-test-component@0.2.0/dist/aframe-ar-hit-test-component.min.js"></script>
+    
+    <script>
+        // KOMPONEN KUSTOM (JavaScript)
+        // Komponen ini akan menempatkan objek saat layar disentuh (tap)
+        AFRAME.registerComponent('place-on-tap', {
+            // Tentukan properti 'reticle' yang akan kita isi
+            // dengan selector ke reticle kita
+            schema: {
+                reticle: { type: 'selector' }
+            },
+            
+            init: function () {
+                // 'this.el' adalah elemen yang punya komponen ini (kotak merah)
+                const el = this.el;
+                const sceneEl = el.sceneEl;
+
+                // Dengarkan 'select' event (tap/klik) pada scene
+                sceneEl.addEventListener('select', () => {
+                    
+                    // Ambil reticle (kursor) dari properti
+                    const reticle = this.data.reticle;
+
+                    // Pastikan reticle ada dan sedang terlihat
+                    // (reticle.getAttribute('visible') akan 'true' jika menempel di permukaan)
+                    if (reticle && reticle.getAttribute('visible')) {
+                        
+                        // Ambil posisi reticle
+                        const position = reticle.getAttribute('position');
+                        
+                        // Setel posisi kotak (this.el) ke posisi reticle
+                        el.setAttribute('position', position);
+                        
+                        // Tampilkan kotaknya
+                        el.setAttribute('visible', true);
+                    }
+                });
+            }
+        });
+    </script>
+    
+</head>
+<body>
+  <a-scene
+        webxr="requiredFeatures: hit-test, local-floor;"
+        vr-mode-ui="enabled: true;">
+        
+        <a-assets>
+            <a-asset-item id="sunflower" src="./SunflowerGarden.glb"></a-asset-item>
+        </a-assets>
+      
+        <a-entity id="reticle"
+          id="reticle"
+                ar-hit-test
+                geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.02;"
+                material="color: #ccc; shader: flat;"
+                rotation="-90 0 0"
+                visible="false">
+        </a-entity>
+
+        <a-entity id="model-to-place" gltf-model="#sunflower" visible="false" scale="0 0 0"></a-entity>
+      
+        <a-camera position="0 1.6 0"></a-camera>
+
+  </a-scene>
+
+  
+</body>
+</html>
